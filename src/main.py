@@ -14,25 +14,6 @@ def health_check_handler():
     return {"status": "ok"}
 
 
-todo_data = {
-    1: {
-        "id": 1,
-        "content": "Buy milk",
-        "is_done": True,
-    },
-    2: {
-        "id": 2,
-        "content": "Buy eggs",
-        "is_done": False,
-    },
-    3: {
-        "id": 3,
-        "content": "Buy bread",
-        "is_done": False,
-    },
-}
-
-
 @app.get("/todos", status_code=200)
 def get_todos_handler(
     order: str | None = None,
