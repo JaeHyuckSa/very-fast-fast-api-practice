@@ -1,3 +1,4 @@
+import random
 from datetime import datetime, timedelta
 
 import bcrypt
@@ -39,3 +40,7 @@ class UserService:
             algorithms=[self.jwt_algorithm],
         )
         return jwt_payload["sub"]
+
+    @staticmethod
+    def create_otp() -> int:
+        return random.randint(1000, 9999)
