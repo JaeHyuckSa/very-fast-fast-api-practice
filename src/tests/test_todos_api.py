@@ -1,17 +1,26 @@
-from database.orm import ToDo
-from database.repository import ToDoRepository
+from database.orm import ToDo, User
+from database.repository import ToDoRepository, UserRepository
+from service.user import UserService
 
 
 def test_get_todos(client, mocker):
+    access_token: str = UserService().create_jwt(username="test")
+
+    header = {"Authorization": f"Bearer {access_token}"}
+
+    user = User(id=1, username="test", password="test")
+    user.todos = [
+        ToDo(id=1, contents="test", is_done=True),
+        ToDo(id=2, contents="test", is_done=False),
+    ]
+
     mocker.patch.object(
-        ToDoRepository,
-        "get_todos",
-        return_value=[
-            ToDo(id=1, contents="test", is_done=True),
-            ToDo(id=2, contents="test", is_done=False),
-        ],
+        UserRepository,
+        "get_user_by_username",
+        return_value=user,
     )
-    response = client.get("/todos")
+
+    response = client.get("/todos", headers=header)
     assert response.status_code == 200
     assert response.json() == {
         "todos": [
@@ -21,7 +30,7 @@ def test_get_todos(client, mocker):
     }
 
     # desc
-    response = client.get("/todos?order=desc")
+    response = client.get("/todos?order=desc", headers=header)
     assert response.status_code == 200
     assert response.json() == {
         "todos": [

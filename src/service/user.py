@@ -31,3 +31,11 @@ class UserService:
             key=self.secret_key,
             algorithm=self.jwt_algorithm,
         )
+
+    def decode_jwt(self, access_token: str) -> dict:
+        jwt_payload: dict = jwt.decode(
+            access_token,
+            key=self.secret_key,
+            algorithms=[self.jwt_algorithm],
+        )
+        return jwt_payload["sub"]
