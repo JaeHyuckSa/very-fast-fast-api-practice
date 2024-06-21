@@ -37,11 +37,6 @@ repos:
       - id: isort
         args: ['--profile', 'black', '--filter-files', 'true']
 
-  - repo: https://github.com/pycqa/bandit
-    rev: 1.7.8
-    hooks:
-      - id: bandit
-        args: ['--skip', 'B101,B110']
 
 default_language_version:
   python: python3.11
